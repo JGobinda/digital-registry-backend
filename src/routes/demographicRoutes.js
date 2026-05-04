@@ -340,56 +340,116 @@ router.get("/:id", getDemographicById);
  *     tags: [Demographics]
  *     summary: Create a new demographic record
  *     description: >
- *       All fields are optional — submit as many or as few as you have.
- *       Designed to support incremental saves across the multi-step form.
+ *       Creates a demographic entry using a flexible, multi-step payload structure.
+ *       All fields are optional and can be submitted incrementally.
+ *       Supports partial submission across different form sections.
  *     security:
  *       - BearerAuth: []
+ *
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/DemographicInput'
+ *
  *           example:
  *             applicantCategory: CAT1
  *             processId: "9702686905585"
  *             nationalIdNumber: "12345678"
+ *
  *             identity:
- *               firstName: Nepal
- *               middleName: Prasad
- *               lastName: Sharma
+ *               firstNameNepali: "नेपाल"
+ *               middleNameNepali: "प्रसाद"
+ *               lastNameNepali: "शर्मा"
+ *               firstName: "Nepal"
+ *               middleName: "Prasad"
+ *               lastName: "Sharma"
+ *               dateOfBirthNepali: "2045-05-15"
  *               dateOfBirth: "1988-08-31"
  *               citizenshipNo: "12-34-56-789"
- *               birthDistrict: Kathmandu
- *               issuedDistrict: Lalitpur
+ *               birthDistrict: "Kathmandu"
+ *               ccType: "Birth"
+ *               issuedDistrict: "Lalitpur"
  *               issuedDate: "2010-03-20"
+ *
  *             additionalInfo:
- *               gender: Male
- *               maritalStatus: Married
- *               religion: Hindu
+ *               gender: "Male"
+ *               maritalStatus: "Married"
+ *               fatherStatus: "Known"
+ *               education: "Bachelor"
+ *               business: "Agriculture"
+ *               cast: "Brahmin"
+ *               religion: "Hindu"
+ *
  *             permanentAddress:
+ *               phone: "01-4000000"
  *               mobile: "9800000000"
- *               state: Bagmati
- *               district: Kathmandu
- *               localLevel: Kathmandu Metropolitan
+ *               state: "Bagmati"
+ *               district: "Kathmandu"
+ *               localLevel: "Kathmandu Metropolitan"
  *               ward: "10"
- *               villageTole: Thamel
+ *               villageTole: "Thamel"
+ *
+ *             copyPermanentToTemporary: true
+ *
+ *             temporaryAddress:
+ *               state: "Bagmati"
+ *               district: "Lalitpur"
+ *               localLevel: "Lalitpur Metropolitan"
+ *               ward: "5"
+ *               villageTole: "Jawalakhel"
+ *
  *             family:
  *               father:
- *                 firstName: Ram
- *                 lastName: Sharma
+ *                 firstName: "Ram"
+ *                 lastName: "Sharma"
  *                 citizenshipNo: "11-22-33-444"
+ *                 nationality: "Nepali"
+ *               mother:
+ *                 firstName: "Sita"
+ *                 lastName: "Sharma"
+ *               spouse:
+ *                 firstName: "Gita"
+ *                 lastName: "Sharma"
+ *
+ *             landOwnership:
+ *               ownsLandInNepal: "Yes"
+ *
+ *             housing:
+ *               isHouseBuilt: "Yes"
+ *               preferredHousingForm: "individual"
+ *
  *             economicStatus:
- *               mainIncomeSource: Agriculture
+ *               mainIncomeSource: "Agriculture"
  *               totalMonthlyIncome: "10000-20000"
- *               economicEmpowermentOption: [gov_support, skill_development]
+ *               hasSavingsOrAssets: "Yes"
+ *               economicEmpowermentOption:
+ *                 - gov_support
+ *                 - skill_development
+ *
+ *             familyHealth:
+ *               chronicIllness: "None"
+ *
  *             familySpecificDetails:
+ *               pregnant: 1
+ *               nursing: 0
  *               childrenUnder5:
  *                 boy: 1
  *                 girl: 1
+ *               children5to16:
+ *                 male: 1
+ *                 female: 2
+ *               seniorCitizens65Plus:
+ *                 male: 1
+ *                 female: 0
+ *               disability:
+ *                 male: 0
+ *                 female: 1
+ *
  *     responses:
  *       201:
- *         description: Demographic record created
+ *         description: Demographic record successfully created
  *         content:
  *           application/json:
  *             schema:
@@ -399,12 +459,26 @@ router.get("/:id", getDemographicById);
  *                   properties:
  *                     data:
  *                       $ref: '#/components/schemas/DemographicRecord'
+ *
+ *       400:
+ *         description: Invalid request payload
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *
+ *       401:
+ *         description: Unauthorized access
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post("/", createDemographic);
 
 /**
  * @swagger
- * /demographics/{id}:
+ * /demographics/{processId}:
  *   patch:
  *     tags: [Demographics]
  *     summary: Partially update a demographic record
@@ -415,7 +489,7 @@ router.post("/", createDemographic);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: processId
  *         required: true
  *         schema: { type: string }
  *     requestBody:
@@ -449,7 +523,7 @@ router.post("/", createDemographic);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.patch("/:id", updateDemographic);
+router.patch("/:processId", updateDemographic);
 
 /**
  * @swagger

@@ -98,7 +98,7 @@ const updateDemographic = async (req, res, next) => {
     const IMMUTABLE = ["createdBy", "processId", "_id"];
     IMMUTABLE.forEach((f) => delete req.body[f]);
 
-    const filter = { _id: req.params.id };
+    const filter = { processId: req.params.processId };
     if (req.user.role !== "admin") filter.createdBy = req.user._id;
 
     const record = await Demographic.findOneAndUpdate(

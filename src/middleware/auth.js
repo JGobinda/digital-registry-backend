@@ -25,6 +25,7 @@ const protect = async (req, res, next) => {
 
     // 3. Confirm user still exists
     const user = await User.findById(decoded.id).select("+passwordChangedAt");
+    console.log("user: ", user)
     if (!user) {
       return sendError(res, { statusCode: 401, message: "User no longer exists." });
     }

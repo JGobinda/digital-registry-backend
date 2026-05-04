@@ -55,12 +55,7 @@ const demographicSchema = new mongoose.Schema(
 
     // Main Applicant Identity
     identity: {
-      firstNameNepali: { type: String, trim: true },
-      middleNameNepali: { type: String, trim: true },
-      lastNameNepali: { type: String, trim: true },
-      firstName: { type: String, trim: true },
-      middleName: { type: String, trim: true },
-      lastName: { type: String, trim: true },
+      ...nameSchema.obj,
       dateOfBirthNepali: { type: String, trim: true }, // BS date stored as string
       dateOfBirth: { type: Date },
       citizenshipNo: { type: String, trim: true },
