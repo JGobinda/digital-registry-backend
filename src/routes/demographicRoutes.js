@@ -301,7 +301,7 @@ router.get("/", listRules, validate, getAllDemographics);
 
 /**
  * @swagger
- * /demographics/{id}:
+ * /demographics/{processId}:
  *   get:
  *     tags: [Demographics]
  *     summary: Get a single demographic record by ID
@@ -309,7 +309,7 @@ router.get("/", listRules, validate, getAllDemographics);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: processId
  *         required: true
  *         schema: { type: string }
  *     responses:
@@ -331,7 +331,7 @@ router.get("/", listRules, validate, getAllDemographics);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/:id", getDemographicById);
+router.get("/:processId", getDemographicById);
 
 /**
  * @swagger
@@ -355,7 +355,6 @@ router.get("/:id", getDemographicById);
  *
  *           example:
  *             applicantCategory: CAT1
- *             processId: "9702686905585"
  *             nationalIdNumber: "12345678"
  *
  *             identity:
@@ -527,7 +526,7 @@ router.patch("/:processId", updateDemographic);
 
 /**
  * @swagger
- * /demographics/{id}:
+ * /demographics/{processId}:
  *   delete:
  *     tags: [Demographics]
  *     summary: Soft-delete a demographic record
@@ -535,7 +534,7 @@ router.patch("/:processId", updateDemographic);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: processId
  *         required: true
  *         schema: { type: string }
  *     responses:
@@ -552,6 +551,6 @@ router.patch("/:processId", updateDemographic);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete("/:id", deleteDemographic);
+router.delete("/:processId", deleteDemographic);
 
 module.exports = router;

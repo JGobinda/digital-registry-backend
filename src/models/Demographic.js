@@ -50,7 +50,19 @@ const demographicSchema = new mongoose.Schema(
     },
 
     // ── SCREEN 2: Applicant Data ────────────────────
-    processId: { type: String, trim: true },
+  // In the schema field:
+    processId: {
+      type: String,
+      unique: true,
+      sparse: true,   // allows null during generation before save
+      immutable: true,
+      required: true,
+      default: () => {
+        const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+        const random = Math.random().toString(36).toUpperCase().slice(2, 8);
+        return `REG-${date}-${random}`;
+      },
+    },
     nationalIdNumber: { type: String, trim: true },
 
     // Main Applicant Identity
@@ -204,6 +216,12 @@ demographicSchema.pre(/^find/, function (next) {
   if (!this.getOptions().includeDeleted) {
     this.where({ isDeleted: { $ne: true } });
   }
+  if (!this.processId) {
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const random = Math.random().toString(36).toUpperCase().slice(2, 8);
+    this.processId = `REG-${date}-${random}`;
+  }
+  console.log('here')
   next();
 });
 

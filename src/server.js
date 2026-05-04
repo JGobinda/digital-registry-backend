@@ -9,7 +9,6 @@ const start = async () => {
   await connectDB();
 
   const server = app.listen(PORT, () => {
-    console.log(`\n🚀 Digital Registry API`);
     console.log(`   Server  : http://localhost:${PORT}`);
     console.log(`   Docs    : http://localhost:${PORT}/api-docs`);
     console.log(`   Health  : http://localhost:${PORT}/api/v1/health`);

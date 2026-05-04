@@ -49,11 +49,11 @@ const getAllDemographics = async (req, res, next) => {
 };
 
 // ─────────────────────────────────────────────────
-// GET /demographics/:id
+// GET /demographics/:processId
 // ─────────────────────────────────────────────────
 const getDemographicById = async (req, res, next) => {
   try {
-    const filter = { _id: req.params.id };
+    const filter = { processId: req.params.processId };
     if (req.user.role !== "admin") filter.createdBy = req.user._id;
 
     const record = await Demographic.findOne(filter).populate("createdBy", "name email");
@@ -125,7 +125,7 @@ const updateDemographic = async (req, res, next) => {
 // ─────────────────────────────────────────────────
 const deleteDemographic = async (req, res, next) => {
   try {
-    const filter = { _id: req.params.id };
+    const filter = { processId: req.params.processId };
     if (req.user.role !== "admin") filter.createdBy = req.user._id;
 
     const record = await Demographic.findOneAndUpdate(
